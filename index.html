@@ -350,7 +350,7 @@
 				if (!res.ok) throw new Error('Не удалось загрузить data.json');
 				const data = await res.json();
 
-				$('#updatedAt').textContent = 'Обновлено: ' + ruDate(new Date().toISOString()));
+				$('#updatedAt').textContent = 'Обновлено: ' + ruDate(new Date().toISOString());
 				renderProfile(data);
 
 				const debts = Array.isArray(data.debts) ? data.debts : [];
