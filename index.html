@@ -98,7 +98,7 @@
     .row:last-child { border-bottom: none; }
     .row .label { color: hsl(var(--muted)); display: flex; align-items: center; gap: 10px; }
     .icon { width: 18px; height: 18px; display: inline-block; color: hsl(var(--primary-600)); }
-    .kpis { display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); }
+    .kpis { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
     @media (max-width: 520px) { .kpis { grid-template-columns: 1fr; } }
     .kpi { padding: 14px; border-radius: 14px; border: 1px dashed hsl(var(--border)); background: hsl(var(--surface) / .65); }
     .kpi .label { color: hsl(var(--muted)); font-size: 13px; }
@@ -108,7 +108,6 @@
     .badge.closed { color: hsl(var(--success)); border-color: hsl(var(--success) / .25); background: hsl(var(--success) / .07); }
     .fade-in { animation: fade .35s ease both; }
     @keyframes fade { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
-    /* Modal */
     .modal {
       position: fixed; inset: 0; display: none; place-items: center; background: rgba(0,0,0,.35);
       backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); z-index: 50; padding: 20px;
@@ -124,10 +123,9 @@
     .table { width: 100%; border-collapse: collapse; }
     .table th, .table td { padding: 10px; border-bottom: 1px solid hsl(var(--border)); text-align: left; }
     .table th { font-size: 12px; color: hsl(var(--muted)); font-weight: 600; letter-spacing: .02em; text-transform: uppercase; }
-    .debt-type { font-weight: 600; }
     @media (max-width: 640px) {
       .row { grid-template-columns: 1fr; }
-      .table th:nth-child(3), .table td:nth-child(3) { display: none; } /* скрыть колонку "Часть" на мобильных */
+      .table th:nth-child(3), .table td:nth-child(3) { display: none; }
     }
   </style>
 </head>
@@ -143,7 +141,6 @@
         </div>
         <div>
           <h1>Личный кабинет студента</h1>
-          <div id="updatedAt" class="meta"></div>
         </div>
       </div>
       <div class="controls">
@@ -168,7 +165,6 @@
       <section class="card">
         <h2>Статистика</h2>
         <div class="kpis">
-          <div class="kpi"><div class="label">Открытые задолженности</div><div id="kpiOpen" class="value">–</div></div>
           <div class="kpi"><div class="label">Всего задолженностей</div><div id="kpiAll" class="value">–</div></div>
           <div class="kpi"><div class="label">Статус студента</div><div id="kpiStatus" class="value">–</div></div>
         </div>
@@ -179,11 +175,10 @@
     </div>
 
     <footer style="margin-top:16px" class="meta">
-      Эта страница общедоступна. Данные берутся из файла data.json.
+      Эта страница общедоступна.
     </footer>
   </div>
 
-  <!-- Modal -->
   <div id="debtsModal" class="modal" aria-hidden="true" aria-labelledby="debtsTitle" role="dialog">
     <div class="modal-card">
       <div class="modal-head">
@@ -199,7 +194,6 @@
               <th>Тип долга</th>
               <th>Часть</th>
               <th>Дата получения</th>
-              <th>Статус</th>
             </tr>
           </thead>
           <tbody id="debtsTableBody"></tbody>
@@ -276,8 +270,6 @@
     }
 
     function renderKpis(debts) {
-      const openCount = debts.filter(d => d.status === 'open').length;
-      $('#kpiOpen').textContent = openCount;
       $('#kpiAll').textContent = debts.length;
     }
 
@@ -306,7 +298,6 @@
           <td class="debt-type">${typeLabel(d.debt_type)}</td>
           <td>${d.part || '—'}</td>
           <td>${d.received_at ? ruDate(d.received_at) : '—'}</td>
-          <td><span class="badge ${d.status === 'open' ? 'open' : 'closed'}">${d.status === 'open' ? 'Открыта' : 'Закрыта'}</span></td>
         </tr>
       `).join('');
     }
@@ -317,7 +308,6 @@
         if (!res.ok) throw new Error('Не удалось загрузить data.json');
         const data = await res.json();
 
-        $('#updatedAt').textContent = 'Обновлено: ' + ruDate(new Date().toISOString());
         renderProfile(data);
         const debts = Array.isArray(data.debts) ? data.debts : [];
         renderKpis(debts);
