@@ -84,19 +84,6 @@
   	filter: drop-shadow(0 2px 4px rgba(0,0,0,.15));
 	}
     .brand h1 { font-size: 18px; margin: 0; }
-	.page-watermark {
-	position: fixed;
-	right: -24px;
-	bottom: -36px;
-	width: 360px;
-	opacity: .06;
-	pointer-events: none;
-	user-select: none;
-	filter: grayscale(1);
-	z-index: 0;
-	}
-	[data-theme="dark"] .page-watermark { opacity: .05; filter: grayscale(1) brightness(.9); }
-	@media (max-width: 640px) { .page-watermark { display: none; } }
     .meta { color: hsl(var(--muted)); font-size: 13px; }
     .controls { display: flex; align-items: center; gap: 10px; }
     .btn {
@@ -345,6 +332,5 @@
     initTheme();
     load();
   </script>
-  <img src="asseta/mirea-emblem.png" alt="" aria-hidden="true" class="page-watermark">
 </body>
 </html>
