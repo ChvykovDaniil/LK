@@ -1,0 +1,24 @@
+{
+  "full_name": "Иванов Иван Иванович",
+  "course_number": 3,
+  "group_number": "БИ-301",
+  "status": "active",
+  "student_number": "STU-123456",
+  "email": "ivanov@example.com",
+  "debts": [
+    {
+      "id": "d1",
+      "title": "Математический анализ",
+      "description": "Сдать лабораторные 3–4",
+      "due_date": "2025-09-01",
+      "status": "open"
+    },
+    {
+      "id": "d2",
+      "title": "Физика",
+      "description": "Пересдача коллоквиума",
+      "due_date": "2025-10-10",
+      "status": "closed"
+    }
+  ]
+}
