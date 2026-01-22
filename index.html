@@ -364,10 +364,11 @@
 
     // ===== Простая авторизация без внешних сервисов =====
     // Замените хеши на свои (SHA-256 hex)
-    const USERS = [
-      { email: 'audir81604@gmail.com', passHash: 'd9b5f58f0b38198293971865a14074f59eba3e82595becbe86ae51f1d9f1f65e' },
-      { email: 'mom@example.com', passHash: 'REPLACE_WITH_SHA256_HEX' }
-    ];
+    const USER_CREDENTIALS = {
+  		'audir81604@gmail.com': 'Medovik55',
+  		'mom@example.com': 'mom123',
+  		'admin@example.com': 'admin2024'
+	};
 
     async function sha256Hex(s) {
       const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
@@ -397,17 +398,19 @@
 
       // Вход
       loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        errEl.textContent = '';
-        const email = (emailEl.value || '').trim().toLowerCase();
-        const pass = passEl.value || '';
-        const user = USERS.find(u => u.email.toLowerCase() === email);
-        if (!user) { errEl.textContent = 'Неверная почта или пароль'; return; }
-        const hash = await sha256Hex(pass);
-        if (hash !== user.passHash) { errEl.textContent = 'Неверная почта или пароль'; return; }
-        sessionStorage.setItem('session', '1');
-        if (applySession()) loadDataAndBind();
-      });
+  		e.preventDefault();
+  		errEl.textContent = '';
+  		const email = (emailEl.value || '').trim().toLowerCase();
+  		const pass = passEl.value || '';
+  
+  	// Простая проверка пароля
+  		if (USER_CREDENTIALS[email] === pass) {
+    		sessionStorage.setItem('session', '1');
+    		if (applySession()) loadDataAndBind();
+  		} else {
+    		errEl.textContent = 'Неверная почта или пароль';
+  		}
+	});
 
       // При открытии страницы
       if (applySession()) loadDataAndBind();
